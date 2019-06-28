@@ -1,2 +1,1 @@
-# LicencePlateRecognition
-C++ (opencv); Python (PyTorch)
+LicencePlateRecognition
