@@ -10,7 +10,7 @@ def predict(image_path):
     Image must be of a number 0-9 or a capital letter A-Z.
     Only resolution accepted: 32x32.
     """
-    
+
     CNN = myCNN.Net().double()
     state_dict = torch.load('saved_model.pth')
     CNN.load_state_dict(state_dict)
@@ -22,9 +22,9 @@ def predict(image_path):
     img = np.array(img).reshape((1,1,32,32)) #vector of a single element with 1 channel of 32x32 pixels
     img = img/img.max() # in case it wasn't normalized
     img = torch.from_numpy(img)
-    
+
     my_dict = define_dict()
-    
+
     outputs = CNN(img)
     _, predicted = torch.max(outputs.data, 1)
     predicted = predicted.numpy()

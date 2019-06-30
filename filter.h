@@ -43,29 +43,6 @@ protected:
 
 };
 
-// Gaussian Filter
-class GaussianFilter : public Filter  {
-
-public:
-	// place constructor
-	GaussianFilter(cv::Mat input_img, int filter_size, double sigma);
-	// re-implement  doFilter()
-	void doFilter();
-
-private:
-	// additional parameter: standard deviation (std)
-	double std;
-};
-
-class MedianFilter : public Filter {
-
-public:
-	// place constructor
-	MedianFilter(cv::Mat input_img, int filter_size);
-	// re-implement  doFilter()
-	void doFilter();
-	// no additional parameters
-};
 
 class BilateralFilter : public Filter {
 

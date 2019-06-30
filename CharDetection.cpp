@@ -8,7 +8,8 @@ vector<PossibleChar> detectChar(Mat & binaryImg, Mat drawing)
 {
 	Mat canny_output;
     	Canny(binaryImg, canny_output, THRESH1, THRESH2, CANNY_FILTER_SIZE );	// Canny edge deteection
-	showIm(canny_output, "Canny edge detection");
+	//showIm(canny_output, "Canny edge detection");
+	imwrite("canny_output.jpg",canny_output);
 
     	vector<vector<Point> > contours;
     	vector<Vec4i> hierarchy;
@@ -41,7 +42,6 @@ vector<PossibleChar> detectChar(Mat & binaryImg, Mat drawing)
 			{
 				if(doIntersect(vecPossibleChar[i],vecPossibleChar[j]))
 				{
-					//cout << "Intersection happened: (i,j) = " << i << ", " << j << endl;
 					if(vecPossibleChar[i].area > vecPossibleChar[j].area)
 					{
 						vecPossibleChar.erase(vecPossibleChar.begin() + j);
@@ -89,6 +89,8 @@ vector<PossibleChar> detectChar(Mat & binaryImg, Mat drawing)
 	waitKey(0);
 	destroyWindow(windowTitle);
 
+	imwrite("drawing.jpg",drawing);
+
 	return vecPossibleChar;
 }
 
@@ -104,20 +106,12 @@ vector<PossibleChar> filterByHeightVar( vector<PossibleChar> & originalVec)
 
 	int N = (int) heights.size();
 	double mean = std::accumulate(heights.begin(), heights.end(), 0.0) / N;
-	cout << "Mean height in pixels: " << mean << endl;
-	double var = 0;
-	for(int  i = 0; i < N; i++ )
-	{
-  		var += (heights[i] - mean) * (heights[i] - mean);
-	}
-	var /= N;
-	double sd = std::sqrt(var);
-	cout << "Standard deviation of height in pixels: " << sd << endl;
+	//cout << "Mean height in pixels: " << mean << endl;
 
 	vector<PossibleChar> filteredVec;
 	for (size_t i=0; i < originalVec.size(); i++)
 	{
-		if (abs(heights[i] - mean) < 2*sd)
+		if (abs(heights[i] - mean) < HEIGHT_THRESH)
 		{
 			filteredVec.push_back(originalVec[i]);
 		}
@@ -142,7 +136,7 @@ vector<PossibleChar> filterByAllignment( vector<PossibleChar> & originalVec)
 
 	int N = (int) yCenters.size();
 	double mean = std::accumulate(yCenters.begin(), yCenters.end(), 0.0) / N;
-	cout << "Mean yCenter in pixels: " << mean << endl;
+	//cout << "Mean yCenter in pixels: " << mean << endl;
 	double var = 0;
 	for(int  i = 0; i < N; i++ )
 	{
@@ -150,7 +144,7 @@ vector<PossibleChar> filterByAllignment( vector<PossibleChar> & originalVec)
 	}
 	var /= N;
 	double sd = std::sqrt(var);
-	cout << "Standard deviation of yCenter in pixels: " << sd << endl;
+	//cout << "Standard deviation of yCenter in pixels: " << sd << endl;
 
 	vector<PossibleChar> filteredVec;
 	for (size_t i=0; i < originalVec.size(); i++)

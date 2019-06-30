@@ -3,7 +3,7 @@
 
 #include <opencv2/core.hpp>
 
-const double MIN_RATIO = 0.2;
+const double MIN_RATIO = 0.18;
 const double MAX_RATIO = 0.4;
 
 class RectCluster {

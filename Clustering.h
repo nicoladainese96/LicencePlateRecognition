@@ -11,12 +11,14 @@
 using namespace std;
 using namespace cv;
 
-const double ALPHA = 1.0; // sum of radii * alpha > distance of centers => merge clusters
+const double ALPHA = 0.85; // sum of radii * alpha > distance of centers => merge clusters
 const int MIN_COMPONENTS = 6; // min number of characters in a licence plate
 
 std::vector<Rect> selectPlates(vector<PossibleChar> & vecPossibleChar, cv::Mat drawing);
 
 std::vector<RectCluster> sortVecOfCluster(std::vector<RectCluster>& originalVec);
+
+std::vector<PossibleChar> sortVecOfPossibleChar(std::vector<PossibleChar>& originalVec);
 
 std::vector<RectCluster> mergeCluster(std::vector<RectCluster> VecOfCluster);
 

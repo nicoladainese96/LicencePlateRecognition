@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <sstream>
+#include <fstream>
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -12,11 +14,11 @@
 #include "RectCluster.h"
 #include "Clustering.h"
 #include "graphics.h"
-#include "plateSegmentation.h"
+#include "plateRecognition.h"
 
 using namespace std;
 using namespace cv;
 
 int main(int argc, char* argv[]);
 
-
+string readResult();

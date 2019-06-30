@@ -42,30 +42,6 @@ int Filter::getSize() {
 		return filter_size;
 		}
 
-
-
-	// Write your code to implement the Gaussian, median and bilateral filters
-
-// implement GaussianFilter constructor
-GaussianFilter::GaussianFilter(Mat input_img, int size, double sigma):
-	Filter(input_img, size)
-	{
-	std = sigma;
-	}
-
-// rewrite doFilter() for GaussianFilter
-void GaussianFilter::doFilter(){
-	GaussianBlur(input_image, result_image, Size(filter_size, filter_size), std, std); //uses only class attributes
-	}
-
-// implement MedianFilter
-MedianFilter::MedianFilter(Mat input_img, int size):
-	Filter(input_img, size){}
-// medianBlur(in,out,size)
-void MedianFilter::doFilter(){
-	medianBlur(input_image, result_image, filter_size);
-	}
-
 // implement BilateralFilter
 BilateralFilter::BilateralFilter(Mat input_img, int size, double s_space, double s_range):
 	Filter(input_img, size)

@@ -19,6 +19,7 @@ const int MAX_PIXEL_HEIGHT = 75; //all these measures are not invariant under ch
 const double MIN_ASPECT_RATIO = 0.15;
 const double MAX_ASPECT_RATIO = 1.0;
 const int MIN_PIXEL_AREA = 80;
+const int HEIGHT_THRESH = 5;
 
 // canny edge detector variables
 const int THRESH1 = 100;

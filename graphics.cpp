@@ -5,6 +5,7 @@ void showIm(Mat & im, String title)
 	namedWindow(title,WINDOW_NORMAL);
         resizeWindow(title, 1080, 1920);
         imshow(title, im );
+	imwrite(title+".jpg",im);
         waitKey(0);
         destroyWindow(title);
 }
@@ -23,7 +24,7 @@ void drawRects(Mat & image, vector<Rect> & vecRect, String windowTitle, int thic
 	}
 
 	imshow(windowTitle, drawing);
-
+	imwrite(windowTitle+".jpg",drawing);
 	waitKey(0);
 	destroyWindow(windowTitle);
 }
@@ -42,7 +43,7 @@ void drawRectsCluster(Mat & image, vector<RectCluster> &  vecRectCluster, String
 	}
 
 	imshow(windowTitle, drawing);
-
+	imwrite(windowTitle+".jpg",drawing);
 	waitKey(0);
 	destroyWindow(windowTitle);
 }
@@ -62,6 +63,7 @@ void drawPossibleChar(Mat & image, vector<PossibleChar> &  vecPossibleChar, Stri
 	}
 
 	imshow(windowTitle, drawing);
+	imwrite(windowTitle+".jpg",drawing);
 
 	waitKey(0);
 	destroyWindow(windowTitle);

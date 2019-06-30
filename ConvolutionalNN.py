@@ -20,15 +20,14 @@ class Net(nn.Module):
         self.fc3 = nn.Linear(64, 36)
 
     def forward(self, x):
-        
         x = F.relu(self.conv1(x))
         x = self.pool1(x)
-                   
+
         x = F.relu(self.conv2(x))
         x = self.pool2(x)
-                   
+
         x = x.view(-1, self.num_flat_features(x))
-                   
+
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
@@ -40,46 +39,46 @@ class Net(nn.Module):
         for s in size:
             num_features *= s
         return num_features
-    
+
 
 
 def createLossAndOptimizer(net, learning_rate=0.001):
-    
+
     #Loss function
     loss = torch.nn.CrossEntropyLoss()
-    
+
     #Optimizer
     optimizer = optim.Adam(net.parameters(), lr=learning_rate)
-    
+
     return(loss, optimizer)
 
 
 def trainNet(net, n_epochs, learning_rate):
-    
+
     #Print all of the hyperparameters of the training iteration:
     print("===== HYPERPARAMETERS =====")
     print("batch_size=", 16)
     print("epochs=", n_epochs)
     print("learning_rate=", learning_rate)
     print("=" * 30)
-    
+
     #Get training data
     n_batches = len(train_loader)
-    
+
     #Create our loss and optimizer functions
     loss, optimizer = createLossAndOptimizer(net, learning_rate)
-    
+
     #Time for printing
     training_start_time = time.time()
-    
+
     #Loop for n_epochs
     for epoch in range(n_epochs):
-        
+
         running_loss = 0.0
         print_every = n_batches // 10
         start_time = time.time()
         total_train_loss = 0
-        
+
         for i, data in enumerate(train_loader, 0):
             
             #Get inputs

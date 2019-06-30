@@ -9,16 +9,16 @@ vector<Rect> selectPlates(vector<PossibleChar> & vecPossibleChar, Mat drawing)
 		RectCluster rc(vecPossibleChar[i].boundingRect, vecPossibleChar[i].boundingRect);
 		vecRectCluster.push_back(rc);
 	};
-	cout << "vecRectCluster done - size: " << vecRectCluster.size() << endl;
+	//cout << "vecRectCluster done - size: " << vecRectCluster.size() << endl;
 
 	String windowTitle0 = "Canny contours with point clusters";
 	drawRectsCluster(drawing, vecRectCluster, windowTitle0,1);
 
 	vector<RectCluster> sortedVecCluster = sortVecOfCluster(vecRectCluster);
-	cout << "sortedVecCluster done - size: " << sortedVecCluster.size() << endl;
+	//cout << "sortedVecCluster done - size: " << sortedVecCluster.size() << endl;
 
 	vector<RectCluster> mergedVecCluster = mergeCluster(sortedVecCluster);
-	cout << "merdedVecCluster done - size:" << mergedVecCluster.size() << endl;
+	//cout << "merdedVecCluster done - size:" << mergedVecCluster.size() << endl;
 
 	String windowTitle1 = "Canny contours with plate-like clusters";
 	drawRectsCluster(drawing, mergedVecCluster, windowTitle1,1);
@@ -31,7 +31,7 @@ vector<Rect> selectPlates(vector<PossibleChar> & vecPossibleChar, Mat drawing)
 			platelikeVecCluster.push_back(mergedVecCluster[i]);
 		}
 	}
-	cout << "platelikeVecCluster done - size: "<< platelikeVecCluster.size() << endl;
+	//cout << "platelikeVecCluster done - size: "<< platelikeVecCluster.size() << endl;
 
 	vector<int> membersOfCluster;
 	for (size_t i = 0; i < platelikeVecCluster.size(); i++)
@@ -46,7 +46,7 @@ vector<Rect> selectPlates(vector<PossibleChar> & vecPossibleChar, Mat drawing)
 		}
 		membersOfCluster.push_back(members);
 	}
-	cout << "membersOfCluster done" << endl;
+	//cout << "membersOfCluster done" << endl;
 
 	vector<Rect> selectedPlates;
 	for (size_t i = 0; i < platelikeVecCluster.size(); i++)
@@ -58,7 +58,7 @@ vector<Rect> selectPlates(vector<PossibleChar> & vecPossibleChar, Mat drawing)
 		}
 	}
 
-	cout << "Number of possible plates selected: " << selectedPlates.size() << endl;
+	//cout << "Number of possible plates selected: " << selectedPlates.size() << endl;
 
 	String windowTitle2 = "Canny contours with plates highlighted";
 	drawRects(drawing, selectedPlates, windowTitle2,1);
@@ -102,6 +102,40 @@ std::vector<RectCluster> sortVecOfCluster(std::vector<RectCluster>& originalVec)
 };
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+std::vector<PossibleChar> sortVecOfPossibleChar(std::vector<PossibleChar>& originalVec)
+{
+	std::vector<PossibleChar> sortedVec;
+	int maxSortedX = 0;
+
+	for(size_t i = 0; i < originalVec.size(); i++)
+	{
+		//cout << "Cycle " << i << "of sortVecOfCluster " << std::endl;
+		if (sortedVec.size() == 0)
+		{
+			sortedVec.push_back(originalVec[i]);
+			maxSortedX = originalVec[i].intCenterX;
+		 }
+		else if (originalVec[i].intCenterX > maxSortedX )
+		{
+			sortedVec.push_back(originalVec[i]);
+			maxSortedX = originalVec[i].intCenterX;
+		 }
+		else
+		{
+			for (size_t j = 0; j < sortedVec.size(); j++ )
+			{
+				if (sortedVec[j].intCenterX > originalVec[i].intCenterX)
+				{
+					sortedVec.insert(sortedVec.begin()+j, originalVec[i]);
+					break;
+				}
+			}
+		}
+	}
+	return sortedVec;
+};
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 std::vector<RectCluster> mergeCluster(std::vector<RectCluster> VecOfCluster)
 {
 	bool loopCondition = true;
@@ -121,7 +155,7 @@ std::vector<RectCluster> mergeCluster(std::vector<RectCluster> VecOfCluster)
 			if (possibleToMerge)
 			{
 				RectCluster vecToMerge = VecOfCluster[i];
-				VecOfCluster[j_star].setHead(vecToMerge.xHead, vecToMerge.yHead, vecToMerge.dHead);
+				VecOfCluster[j_star].setHead(vecToMerge.xHead, vecToMerge.yHead, std::max(vecToMerge.dHead,VecOfCluster[i].dTail));
 				VecOfCluster.erase(VecOfCluster.begin() + i);
 				break;
 			}
